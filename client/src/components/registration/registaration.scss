@@ -1,0 +1,56 @@
+@import "./src/utils/color/colors";
+@import "./src/utils/templates/btnActive";
+
+
+.registration {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 537px;
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 30px;
+  align-self: center;
+
+  &__header {
+    font-size: 30px;
+    font-weight: 700;
+  }
+
+  input {
+    margin: 10px 20px;
+    padding: 3px;
+  }
+
+  &__btn {
+    border: none;
+    background-color: $font-color;
+    color: #fff;
+    border-radius: 8px;
+    font-weight: 700;
+    padding: 5px 10px;
+    align-self: flex-end;
+    margin-top: 10px;
+    @extend %btnActive
+  }
+}
+
+::-webkit-input-placeholder { /* Chrome */
+  color: $font-color;
+  font-weight: 700;
+}
+
+:-ms-input-placeholder { /* IE 10+ */
+  color: $font-color;
+  font-weight: 700;
+}
+
+::-moz-placeholder { /* Firefox 19+ */
+  color: $font-color;
+  font-weight: 700;
+}
+
+:-moz-placeholder { /* Firefox 4 - 18 */
+  color: $font-color;
+  font-weight: 700;
+}

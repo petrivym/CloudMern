@@ -1,0 +1,9 @@
+@import "./src/utils/color/colors";
+
+%btnActive {
+  &:active {
+    transform: scale(1.05);
+    color: $font-color;
+    background-color: #000;
+  }
+}

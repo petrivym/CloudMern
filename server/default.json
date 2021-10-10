@@ -1,0 +1,6 @@
+{
+  "serverPort": 5000,
+  "dbUrl": "mongodb+srv://Cloud:Cloud9750@cloud.rfymv.mongodb.net/Cloud?retryWrites=true&w=majority",
+  "secretKeyAccess": "WhiskeyInTheJar",
+  "secretKeyRefresh": "IrelandOnJune8,2019"
+}
