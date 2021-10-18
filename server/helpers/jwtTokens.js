@@ -29,8 +29,7 @@ module.exports = {
             refreshToken: refreshToken
         }
     },
-    compareToken: async (typeToken = ACCESS, token, secretKey) => {
-        const isTokenTrue = jwt.verify(token, secretKey);
-        console.log(isTokenTrue);
+    compareToken: async (token, secretKey) => {
+        await jwt.verify(token, secretKey)
     }
 }

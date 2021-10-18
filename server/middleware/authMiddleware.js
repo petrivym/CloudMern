@@ -1,9 +1,13 @@
 const ErrorHandler = require("../error/error-Handler");
-const {ERROR_EMAIL_CONFLICT, WRONG_PASSWORD, NOT_VALID_PASSWORD_OR_EMAIL} = require("../error/errorMassages");
+const {ERROR_EMAIL_CONFLICT, WRONG_PASSWORD, NOT_VALID_PASSWORD_OR_EMAIL, NO_TOKEN} = require("../error/errorMassages");
 let {User} = require("../models");
 const {isValidData} = require("../helpers/validLoginRegistrationValue");
 const {checkUser} = require("../helpers/byCript");
 const {authUser} = require("../validators/registrationValidators");
+const bcrypt = require("bcrypt");
+const {compareToken} = require("../helpers/jwtTokens");
+const config = require('config');
+const jwt = require("jsonwebtoken");
 
 
 module.exports = {
@@ -11,11 +15,11 @@ module.exports = {
         try {
             const {email} = req.body;
 
-            const {error} = authUser.validate(req.body);
-
-            if (error) {
-                throw new ErrorHandler(NOT_VALID_PASSWORD_OR_EMAIL.statusCode, error.message, NOT_VALID_PASSWORD_OR_EMAIL.customCode)
-            }
+            // const {error} = authUser.validate(req.body);
+            //
+            // if (error) {
+            //     throw new ErrorHandler(NOT_VALID_PASSWORD_OR_EMAIL.statusCode, error.message, NOT_VALID_PASSWORD_OR_EMAIL.customCode)
+            // }
 
             const isUnique = await User.findOne({email: email});
 
@@ -31,7 +35,12 @@ module.exports = {
     verifyLogin: async (req, res, next) => {
         try {
             const {email, password} = req.body;
-            isValidData(req.body);
+
+            // const {error} = authUser.validate(req.body);
+            //
+            // if (error) {
+            //     throw new ErrorHandler(NOT_VALID_PASSWORD_OR_EMAIL.statusCode, error.message, NOT_VALID_PASSWORD_OR_EMAIL.customCode)
+            // }
 
             const user = await User.findOne({email: email});
 
@@ -39,9 +48,32 @@ module.exports = {
                 throw new ErrorHandler(WRONG_PASSWORD.statusCode, WRONG_PASSWORD.message, WRONG_PASSWORD.responseCode)
             }
 
-            await checkUser(user.password, password);
+            const chekPassword = await bcrypt.compare(password, user.password);
+
+            if (!chekPassword) {
+                throw new ErrorHandler(WRONG_PASSWORD.statusCode, WRONG_PASSWORD.message, WRONG_PASSWORD.customCode)
+            }
 
             req.user = user
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    checkLoginUser: async (req, res, next) => {
+        if (req.method === 'OPTIONS') {
+            return next()
+        }
+        try {
+            const token = req.headers.authorization.split(' ')[1];
+
+            if (!token) {
+                throw new ErrorHandler(NO_TOKEN.statusCode, NO_TOKEN.message, NO_TOKEN.customCode)
+            }
+            const isTrueToken = await jwt.verify(token, config.get('secretKeyAccess'))
+
+            req.user = isTrueToken
             next();
         } catch (e) {
             next(e);

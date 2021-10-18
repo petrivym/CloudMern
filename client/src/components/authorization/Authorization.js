@@ -1,6 +1,6 @@
-import {useState} from "react";
 import './registaration.scss'
 import Input from "../input/Input";
+import {useState} from "react";
 import {registrationUser} from "../../actions/user";
 
 export default function Registration() {
@@ -12,7 +12,7 @@ export default function Registration() {
             <div className="registration__header">Registration</div>
             <Input value={email} setValue={setEmail} type="email" placeHolder="Enter email..."/>
             <Input value={password} setValue={setPassword} type="password" placeHolder="Enter password..."/>
-                <button className="registration__btn" onClick={() => registrationUser(email,password)}>Sig in</button>
+            <button className="registration__btn" onClick={() => registrationUser(email, password)}>Sig in</button>
         </div>
     );
 }

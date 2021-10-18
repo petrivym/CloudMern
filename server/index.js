@@ -2,7 +2,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const config = require('config');
 
-
 const {RECORD_NOT_FOUND, UNKNOWN_ERROR} = require("./error/errorMassages");
 const {authRouter} = require("./routes");
 const {corsMiddleware} = require("./middleware")
